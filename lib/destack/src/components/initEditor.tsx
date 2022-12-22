@@ -54,8 +54,14 @@ const initEditor = async (startServer = true, standaloneServer): Promise<void> =
 const loadTemplate = async (editor, standaloneServer): Promise<void> => {
   const baseUrl = standaloneServer ? `http://localhost:${port}` : ''
   const data = await fetchJSON({ method: 'get', url: `${baseUrl}/api/builder/handle` })
-  const pathNameWindows = location.pathname === '/' ? '\\default.json' : `${location.pathname}.json`
-  const pathNameUnix = location.pathname === '/' ? '/default.json' : `${location.pathname}.json`
+
+  let pathName = location.pathname.replace('/edit', '')
+  if (pathName === '') {
+    pathName = '/'
+  }
+
+  const pathNameWindows = pathName === '/' ? '\\default.json' : `${pathName}.json`
+  const pathNameUnix = pathName === '/' ? '/default.json' : `${pathName}.json`
   const component = Object.keys(data).find((c) =>
     [pathNameWindows, pathNameUnix].includes(data[c].filename),
   )
@@ -77,6 +83,7 @@ const editorOptions = {
   selectorManager: { escapeName },
   container: '#gjs',
   height: '100%',
+  width: '100%',
   storageManager: { autoload: false },
   showDevices: false,
   traitsEditor: true,
