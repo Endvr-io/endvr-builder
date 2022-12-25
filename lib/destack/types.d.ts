@@ -1,10 +1,14 @@
 export interface dataType {
-  filename: string
-  content: string
+  assets: string
+  components: string
+  css: string
+  html: string
+  styles: string
 }
 
 export interface StaticBuildProps {
-  data?: dataType[]
+  data?: dataType
+  updateData?: any
 }
 
 export interface ContentProviderProps extends StaticBuildProps {

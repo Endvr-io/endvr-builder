@@ -24,7 +24,12 @@ const uploadFile = (e, editor, standaloneServer): void => {
     })
 }
 
-const initEditor = async (startServer = true, standaloneServer): Promise<void> => {
+const initEditor = async (
+  startServer = true,
+  standaloneServer,
+  data,
+  updatePage,
+): Promise<void> => {
   const grapesjs = await import('grapesjs')
 
   // for 'npm run test' only
@@ -47,28 +52,13 @@ const initEditor = async (startServer = true, standaloneServer): Promise<void> =
 
   appendCss(editor)
 
-  if (startServer) handleEvents(editor, standaloneServer)
-  if (startServer) loadTemplate(editor, standaloneServer)
+  if (startServer) handleEvents(editor, standaloneServer, updatePage)
+  if (startServer) loadTemplate(editor, standaloneServer, data)
 }
 
-const loadTemplate = async (editor, standaloneServer): Promise<void> => {
-  const baseUrl = standaloneServer ? `http://localhost:${port}` : ''
-  const data = await fetchJSON({ method: 'get', url: `${baseUrl}/api/builder/handle` })
-
-  let pathName = location.pathname.replace('/edit', '')
-  if (pathName === '') {
-    pathName = '/'
-  }
-
-  const pathNameWindows = pathName === '/' ? '\\default.json' : `${pathName}.json`
-  const pathNameUnix = pathName === '/' ? '/default.json' : `${pathName}.json`
-  const component = Object.keys(data).find((c) =>
-    [pathNameWindows, pathNameUnix].includes(data[c].filename),
-  )
-  if (!component) return
-  const content = JSON.parse(data[component].content)
-  editor.setComponents(JSON.parse(content.components))
-  editor.setStyle(JSON.parse(content.styles))
+const loadTemplate = async (editor, standaloneServer, data): Promise<void> => {
+  editor.setComponents(JSON.parse(data.components))
+  editor.setStyle(JSON.parse(data.styles))
 }
 
 const assetManagerOptions = {

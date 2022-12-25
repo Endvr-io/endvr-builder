@@ -34,7 +34,7 @@ const uploadFiles = async (req: NextApiRequest): Promise<string[]> => {
 }
 export { uploadFiles }
 
-const loadData = async (): Promise<dataType[]> => {
+const loadData = async () => {
   const basePath = path.join(rootPath, folderPath)
   const folderExists = await exists(basePath)
   if (!folderExists) return []
