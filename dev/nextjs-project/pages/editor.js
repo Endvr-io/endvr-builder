@@ -1,6 +1,6 @@
 require('./styles/index.module.css')
-export { getStaticProps } from 'destack/build/server'
-import { ContentProvider } from 'destack'
+export { getStaticProps } from 'endvr-builder/build/server'
+import { ContentProvider } from 'endvr-builder'
 
 const Index = (props) => {
   return (

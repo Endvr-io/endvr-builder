@@ -46,5 +46,9 @@
       "pretty-quick --staged",
       "tsc --noEmit"
     ]
+  },
+  "dependencies": {
+    "react-moment": "^1.1.2",
+    "reading-time": "^1.5.0"
   }
 }

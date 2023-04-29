@@ -1,1 +1,1 @@
-export { handleData as default, config } from 'destack/build/server'
+export { handleData as default, config } from 'endvr-builder/build/server'

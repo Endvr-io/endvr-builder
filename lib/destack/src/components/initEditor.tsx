@@ -9,6 +9,25 @@ import { handleEvents } from '../lib/events'
 import { ChangeEvent } from 'react'
 import { standaloneServerPort as port } from '../../server/config'
 
+function resizableAllPlugin(editor, options = {}) {
+  const resizableOptions = {
+    tl: true,
+    tc: true,
+    tr: true,
+    cl: true,
+    cr: true,
+    bl: true,
+    bc: true,
+    br: true,
+  }
+
+  // Listen for the 'component:add' event
+  editor.on('component:add', (component) => {
+    // Set the resizable property for the added component
+    component.set('resizable', resizableOptions)
+  })
+}
+
 const uploadFile = (e, editor, standaloneServer): void => {
   const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
   const formData = new FormData()
@@ -78,5 +97,6 @@ const editorOptions = {
   showDevices: false,
   traitsEditor: true,
   assetManager: assetManagerOptions,
+  plugins: [resizableAllPlugin],
 }
 export { initEditor }
