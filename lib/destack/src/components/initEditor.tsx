@@ -5,6 +5,7 @@ import { loadBlocks } from '../lib/blocks'
 import { fetchJSON, escapeName } from '../utils'
 import { appendCss } from '../lib/css'
 import { handleEvents } from '../lib/events'
+const grapesJsTouch = require('grapesjs-touch')
 
 import { ChangeEvent } from 'react'
 import { standaloneServerPort as port } from '../../server/config'
@@ -97,6 +98,6 @@ const editorOptions = {
   showDevices: false,
   traitsEditor: true,
   assetManager: assetManagerOptions,
-  plugins: [resizableAllPlugin],
+  plugins: [resizableAllPlugin, grapesJsTouch],
 }
 export { initEditor }
