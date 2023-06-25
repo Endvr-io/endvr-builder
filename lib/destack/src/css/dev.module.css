@@ -23,7 +23,7 @@
   background-color: #f1f1f1 !important;
 }
 
-.gjs-field-checkbox input:checked+.gjs-chk-icon {
+.gjs-field-checkbox input:checked + .gjs-chk-icon {
   border-color: rgba(99, 102, 241, 0.5); /* #6366f1 */
 }
 
@@ -80,6 +80,7 @@
 } */
 .gjs-pn-buttons {
   justify-content: space-around !important;
+  overflow: hidden;
 }
 
 /* hacky way to align the device icons  */
@@ -127,13 +128,47 @@ span.gjs-pn-btn.fa.fa-mobile {
 
 .gjs-pn-panels {
   display: flex;
-  width: 20%;
+  width: 40%;
 }
 
 .gjs-frame {
-  width: 100%
+  width: 100%;
 }
 
 .sp-container.sp-hidden.sp-light.sp-input-disabled.sp-alpha-enabled.sp-palette-buttons-disabled.sp-initial-disabled.gjs-one-bg.gjs-two-color {
   display: none;
+}
+@media (max-width: 768px) {
+  .gjs-pn-buttons {
+    justify-content: space-around !important;
+    overflow: hidden;
+  }
+
+  .gjs-pn-panel.gjs-pn-views-container {
+    padding: 0;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .gjs-pn-panel.gjs-pn-options {
+    display: none;
+  }
+
+  .gjs-pn-panel.gjs-pn-commands {
+    display: none;
+  }
+
+  .gjs-pn-panel.gjs-pn-views {
+    width: 100%;
+  }
+
+  .gjs-pn-panels {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gjs-pn-panel {
+    display: flex;
+    position: initial;
+  }
 }

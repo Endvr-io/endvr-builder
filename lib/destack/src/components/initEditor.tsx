@@ -5,10 +5,43 @@ import { loadBlocks } from '../lib/blocks'
 import { fetchJSON, escapeName } from '../utils'
 import { appendCss } from '../lib/css'
 import { handleEvents } from '../lib/events'
-const grapesJsTouch = require('grapesjs-touch')
 
 import { ChangeEvent } from 'react'
 import { standaloneServerPort as port } from '../../server/config'
+import { sources } from '../lib/blocks/tailwind'
+
+function loadTailwindComponents(newEditor) {
+  sources.forEach((s) => {
+    newEditor.DomComponents.addType(s.id, {
+      model: {
+        defaults: {
+          // These are the default properties of your component,
+          // you should replace this with the properties that fit your component
+          tagName: 'div',
+          attributes: { class: s.class },
+          components: s.content,
+        },
+      },
+    })
+  })
+}
+
+function loadTailwindBlocks(newEditor) {
+  loadTailwindComponents(newEditor) // Call the function to load components here before loading blocks
+
+  const blockManager = newEditor.BlockManager
+
+  sources.forEach((s) => {
+    blockManager.add(s.id, {
+      label: s.label,
+      attributes: { class: s.class },
+      content: {
+        type: s.id, // Use the component type you've defined
+      },
+      category: { label: s.category, open: s.category === 'Blog' },
+    })
+  })
+}
 
 function resizableAllPlugin(editor, options = {}) {
   const resizableOptions = {
@@ -22,10 +55,22 @@ function resizableAllPlugin(editor, options = {}) {
     br: true,
   }
 
-  // Listen for the 'component:add' event
-  editor.on('component:add', (component) => {
-    // Set the resizable property for the added component
+  const setResizable = (component) => {
     component.set('resizable', resizableOptions)
+    const components = component.components()
+    if (components.length > 0) {
+      components.each((component) => setResizable(component))
+    }
+  }
+
+  editor.on('load', () => {
+    editor.DomComponents.getComponents().each((component) => {
+      setResizable(component)
+    })
+  })
+
+  editor.on('component:add', (component) => {
+    setResizable(component)
   })
 }
 
@@ -51,6 +96,7 @@ const initEditor = async (
   updatePage,
 ): Promise<void> => {
   const grapesjs = await import('grapesjs')
+  const grapesjsTouch = await import('grapesjs-touch')
 
   // for 'npm run test' only
   globalThis.grapesjs = grapesjs
@@ -63,22 +109,24 @@ const initEditor = async (
 
   // need var intead of const so it's global
   // and its accessible in uploadFile function
-  var editor = grapesjs.init(editorOptions)
+  var editor = grapesjs.init({
+    ...editorOptions,
+    plugins: [grapesjsTouch.default, loadTailwindBlocks, resizableAllPlugin],
+  })
 
   loadTraits(editor)
   loadPanels(editor, startServer)
   loadComponents(editor)
   loadBlocks(editor)
 
-  appendCss(editor)
-
   if (startServer) handleEvents(editor, standaloneServer, updatePage)
   if (startServer) loadTemplate(editor, standaloneServer, data)
+
+  appendCss(editor)
 }
 
 const loadTemplate = async (editor, standaloneServer, data): Promise<void> => {
-  editor.setComponents(JSON.parse(data.components))
-  editor.setStyle(JSON.parse(data.styles))
+  editor.loadProjectData(data)
 }
 
 const assetManagerOptions = {
@@ -98,6 +146,5 @@ const editorOptions = {
   showDevices: false,
   traitsEditor: true,
   assetManager: assetManagerOptions,
-  plugins: [resizableAllPlugin, grapesJsTouch],
 }
 export { initEditor }

@@ -662,4 +662,4 @@ const loadTailwindBlocks = (newEditor: { BlockManager: any }): void => {
     })
   })
 }
-export { loadTailwindBlocks }
+export { loadTailwindBlocks, sources }

@@ -1,10 +1,7 @@
-import {loadBasicBlocks} from './basic'
+import { loadBasicBlocks } from './basic'
 // import {loadFormBlocks} from './form'
-import {loadTailwindBlocks} from './tailwind'
+// import { loadTailwindBlocks } from './tailwind'
 
-export function loadBlocks (editor) {
+export function loadBlocks(editor) {
   loadBasicBlocks(editor)
-  loadTailwindBlocks(editor)
-
 }
-
