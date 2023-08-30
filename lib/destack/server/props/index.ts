@@ -10,11 +10,11 @@ type StaticPropsReturn = {
 }
 
 const getStaticProps = async (): Promise<StaticPropsReturn> => {
-  if (development) {
-    return { props: {} }
-  } else {
-    const data = await loadData()
-    return { props: { data: data } }
-  }
+  // if (development) {
+  return { props: {} }
+  // } else {
+  //   const data = await loadData('test')
+  //   return { props: { data: data } }
+  // }
 }
 export { getStaticProps }

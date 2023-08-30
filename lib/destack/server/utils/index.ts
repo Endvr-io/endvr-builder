@@ -1,6 +1,6 @@
-import formidable from 'formidable'
-import fs from 'fs'
-import path from 'path'
+import * as formidable from 'formidable'
+import * as fs from 'fs'
+import * as path from 'path'
 import { NextApiRequest } from 'next'
 
 import FormidableForm from 'formidable/Formidable'

@@ -77,16 +77,24 @@ function resizableAllPlugin(editor, options = {}) {
 const uploadFile = (e, editor, standaloneServer): void => {
   const files = e.dataTransfer ? e.dataTransfer.files : e.target.files
   const formData = new FormData()
+
   for (const i in files) {
     formData.append('file-' + i, files[i])
   }
 
   const baseUrl = standaloneServer ? `http://localhost:${port}` : ''
   fetch(`${baseUrl}/api/builder/handle`, { method: 'POST', body: formData })
-    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+      if (!res.ok) {
+        throw new Error('An error occurred while uploading the files.')
+      }
+      return res.json()
+    })
     .then((images) => {
       editor.AssetManager.add(images)
     })
+    .catch((error) => console.error(error))
 }
 
 const initEditor = async (

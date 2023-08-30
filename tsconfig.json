@@ -13,10 +13,19 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "**/*.e2e.ts"],
-  "include": ["**/*.ts", "**/*.tsx", "types.d.ts", "images.d.ts", "grapesjs.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "types.d.ts",
+    "images.d.ts",
+    "grapesjs.d.ts"
+  ]
 }

@@ -27,7 +27,7 @@ const ContentProvider: FC<ContentProviderProps> = ({
   useEffect(() => {
     if (mounted.current) return
 
-    import('./initEditor').then((c) => c.initEditor(true, true, data, handlePageUpdate))
+    import('./initEditor').then((c) => c.initEditor(true, false, data, handlePageUpdate))
 
     mounted.current = true
   }, [])
